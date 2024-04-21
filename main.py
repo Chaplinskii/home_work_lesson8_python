@@ -4,7 +4,8 @@ import csv
 def search():
     print('Для выхода в МЕНЮ введите 0')
     s=input('Поисковый запрос:>').lower()# поисковый запрос
-    exit_menu(s)
+    if exit_menu(s):
+        return phone_book()
     with open('phone_book.csv', 'r') as book:
         file_reader = csv.reader(book, delimiter="*")
         counter=0
@@ -14,62 +15,72 @@ def search():
                 counter+=1
         if counter==0:
             print(f'`{s}` не найдено')
-        search()
+        return search()
 def add():
     print('Для выхода в МЕНЮ введите 0. Введите Фамилию, Имя, Отчество, Телефон')
     new_id = []
     f=input('Введите Фамилию:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     new_id.append(f.lower())
     f = input('Введите Имя:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     new_id.append(f.lower())
     f = input('Введите Отчество:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     new_id.append(f.lower())
     f = input('Введите Телефон:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     new_id.append(f.lower())
     with open('phone_book.csv', 'r') as book:
         file_reader = csv.reader(book, delimiter="*")
         for row in file_reader:
             if new_id==row:
                 x=input('Такая запись существует, записать еще раз? `да` `нет`:>')
-                exit_menu(x)
+                if exit_menu(x):
+                    return phone_book()
                 if x=='да':
                     book=open('phone_book.csv', 'a')
                     file_writer = csv.writer(book, delimiter="*")
                     file_writer.writerow(new_id)
                     book.close()
-                    phone_book()
+                    return phone_book()
                 if x=='нет':
-                    phone_book()
+                    return phone_book()
         if new_id!=row:
             print(f'Вы ввели {new_id}')
             x=input('Сохранить? `да` `нет`:>')
-            exit_menu(x)
+            if exit_menu(x):
+                return phone_book()
             if x == 'да':
                 book = open('phone_book.csv', 'a')
                 file_writer = csv.writer(book, delimiter="*")
                 file_writer.writerow(new_id)
                 book.close()
-                phone_book()
+                return phone_book()
             if x == 'нет':
-                phone_book()
+                return phone_book()
 def delete():
     print('Для выхода в МЕНЮ введите 0. Введите Фамилию, Имя, Отчество, Телефон записи которую надо удалить')
     del_id = []
     f = input('Введите Фамилию:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     del_id.append(f.lower())
     f = input('Введите Имя:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     del_id.append(f.lower())
     f = input('Введите Отчество:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     del_id.append(f.lower())
     f = input('Введите Телефон:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     del_id.append(f.lower())
     with open('phone_book.csv', 'r') as book:
         file_reader = csv.reader(book, delimiter="*")
@@ -82,9 +93,10 @@ def delete():
                 counter+=1
         if counter==0:
             print(f'`{del_id}` не найдено')
-            delete()
+            return delete()
     x=input('Укажите номер строки которую необходимо удалить:>')
-    exit_menu(x)
+    if exit_menu(x):
+        return phone_book()
     book = open('phone_book.csv', 'r')
     file_reader = csv.reader(book, delimiter="*")
     rows = []
@@ -96,11 +108,12 @@ def delete():
     file_writer = csv.writer(book, delimiter='*')
     file_writer.writerows(rows)
     book.close()
-    phone_book()
+    return phone_book()
 def to_change():
     print('Для выхода в МЕНЮ введите 0')
     s = input('Поисковый запрос:>').lower()  # поисковый запрос
-    exit_menu(s)
+    if exit_menu(s):
+        return phone_book()
     with open('phone_book.csv', 'r') as book:
         file_reader = csv.reader(book, delimiter="*")
         counter = 0
@@ -114,22 +127,27 @@ def to_change():
                 counter += 1
         if counter == 0:
             print(f'`{s}` не найдено')
-            to_change()
+            return to_change()
     x = input('Укажите номер строки которую необходимо заменить:>')
-    exit_menu(x)
+    if exit_menu(x):
+        return phone_book()
     del_row = rows.pop(int(x) - 1)
     change_id = []
     f = input('Введите Фамилию:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     change_id.append(f.lower())
     f = input('Введите Имя:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     change_id.append(f.lower())
     f = input('Введите Отчество:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     change_id.append(f.lower())
     f = input('Введите Телефон:>')
-    exit_menu(f)
+    if exit_menu(f):
+        return phone_book()
     change_id.append(f.lower())
     rows.insert(int(x) - 1, change_id)
     book = open('phone_book.csv', 'w+')
@@ -137,7 +155,7 @@ def to_change():
     file_writer.writerows(rows)
     book.close()
     print(f'Запись {del_row} заменена на {change_id}')
-    phone_book()
+    return phone_book()
 def print_book():
     number_row=0
     with open('phone_book.csv', 'r') as book:
@@ -145,10 +163,11 @@ def print_book():
         for row in file_reader:
             number_row += 1
             print(f'{number_row}{row}')
-    phone_book()
+    return phone_book()
 def copy_row():
     s = input('Поисковый запрос:>').lower()  # поисковый запрос
-    exit_menu(s)
+    if exit_menu(s):
+        return phone_book()
     number_row = 0
     rows = []
     with open('phone_book.csv', 'r') as book:
@@ -163,7 +182,8 @@ def copy_row():
         if counter == 0:
             print(f'`{s}` не найдено')
     x = input('Введите номер строки которую необходимо скопировать:>')
-    exit_menu(x)
+    if exit_menu(x):
+        return phone_book()
     copy_id = rows[int(x) - 1]
     # print(copy_id)
     book = open('phone_book_home_work.csv', 'a')
@@ -171,25 +191,28 @@ def copy_row():
     file_writer.writerow(copy_id)
     book.close()
     print(f'Строка {copy_id} скопирована в фаил phone_book_home_work.csv')
+    return phone_book()
 def exit_menu(s):
     if s.isdigit() and int(s)==0:# проверяем состоит ли запрос из цифр
-        phone_book()
+        return True
 def phone_book ():
     print('МЕНЮ: 1-Поиск; 2-Добавить; 3-Удалить; 4-Изменить; 5-Вывести весь справочник; 6-Копирование строки; 0-Выход')
     comand=int(input('Введите команду необходимого действия:>'))
     if comand==0:
         exit()
     if comand==1:
-        search()
+        return search()
     if comand==2:
-        add()
+        return add()
     if comand==3:
-        delete()
+        return delete()
     if comand==4:
-        to_change()
+        return to_change()
     if comand==5:
-        print_book()
+        return print_book()
     if comand==6:
-        copy_row()
+        return copy_row()
+    if comand>6:
+        return phone_book()
 
 phone_book()
