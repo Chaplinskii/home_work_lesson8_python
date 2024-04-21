@@ -33,6 +33,8 @@ def phone_book ():
         delete()
     if comand==4:
         to_change()
+    if comand==5:
+        print_book()
 
 
 def add():
@@ -158,6 +160,15 @@ def to_change():
     file_writer.writerows(rows)
     book.close()
     print(f'Запись {del_row} заменена на {change_id}')
+    phone_book()
+
+def print_book():
+    number_row=0
+    with open('phone_book.csv', 'r') as book:
+        file_reader = csv.reader(book, delimiter="*")
+        for row in file_reader:
+            number_row += 1
+            print(f'{number_row}{row}')
     phone_book()
 
 
