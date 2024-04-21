@@ -31,6 +31,8 @@ def phone_book ():
         add()
     if comand==3:
         delete()
+    if comand==4:
+        to_change()
 
 
 def add():
@@ -110,18 +112,53 @@ def delete():
         rows.append(row)
     book.close()
     print(f'Запись {rows.pop(int(x)-1)} удалена')
-    # print(rows)
-    # print(rows.pop(1))
-    # print(rows)
     book = open('phone_book.csv', 'w+')
     file_writer = csv.writer(book, delimiter='*')
-    # file_writer
     file_writer.writerows(rows)
     book.close()
     phone_book()
 
-# def to_change():
-
+def to_change():
+    print('Для выхода в МЕНЮ введите 0')
+    s = input('Поисковый запрос:>').lower()  # поисковый запрос
+    exit_menu(s)
+    with open('phone_book.csv', 'r') as book:
+        file_reader = csv.reader(book, delimiter="*")
+        counter = 0
+        number_row = 0
+        rows = []
+        for row in file_reader:
+            rows.append(row)
+            number_row += 1
+            if s in row:
+                print(f'{number_row}{row}')
+                counter += 1
+        if counter == 0:
+            print(f'`{s}` не найдено')
+            to_change()
+    x = input('Укажите номер строки которую необходимо заменить:>')
+    exit_menu(x)
+    del_row = rows.pop(int(x) - 1)
+    change_id = []
+    f = input('Введите Фамилию:>')
+    exit_menu(f)
+    change_id.append(f.lower())
+    f = input('Введите Имя:>')
+    exit_menu(f)
+    change_id.append(f.lower())
+    f = input('Введите Отчество:>')
+    exit_menu(f)
+    change_id.append(f.lower())
+    f = input('Введите Телефон:>')
+    exit_menu(f)
+    change_id.append(f.lower())
+    rows.insert(int(x) - 1, change_id)
+    book = open('phone_book.csv', 'w+')
+    file_writer = csv.writer(book, delimiter='*')
+    file_writer.writerows(rows)
+    book.close()
+    print(f'Запись {del_row} заменена на {change_id}')
+    phone_book()
 
 
 phone_book()

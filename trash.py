@@ -1,20 +1,35 @@
 import csv
 
-book= open('phone_book.csv', 'r')
-file_reader = csv.reader(book, delimiter="*")
-rows=[]
-for row in file_reader:
+with open('phone_book.csv', 'r') as book:
+    file_reader = csv.reader(book, delimiter="*")
+    counter = 0
+    number_row = 0
+    rows = []
+    for row in file_reader:
+        rows.append(row)
+        number_row += 1
+        if s in row:
+            print(f'{number_row}{row}')
+            counter += 1
+    if counter == 0:
+        print(f'`{s}` не найдено')
+        to_change()
+x = input('Укажите номер строки которую необходимо заменить:>')
+exit_menu(x)
+del_row = rows.pop(int(x) - 1)
+change_id = []
+f = input('Введите Фамилию:>')
+exit_menu(f)
+change_id.append(f.lower())
+f = input('Введите Имя:>')
+exit_menu(f)
+change_id.append(f.lower())
+f = input('Введите Отчество:>')
+exit_menu(f)
+change_id.append(f.lower())
+f = input('Введите Телефон:>')
+exit_menu(f)
+change_id.append(f.lower())
+rows.insert(int(x) - 1, change_id)
 
-    rows.append(row)
-book.close()
-print(rows)
-print(rows.pop(1))
-print(rows)
-book=open('phone_book.csv', 'w+')
-file_writer=csv.writer(book, delimiter='*')
-# file_writer
-file_writer.writerows(rows)
-book.close()
 
-
-print(file_reader.line_num)
